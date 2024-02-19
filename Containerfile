@@ -3,9 +3,12 @@ FROM registry.fedoraproject.org/fedora:39 AS systemd
 
 # Install systemd mariadb nginx php-fpm
 #RUN dnf install -y systemd mariadb-server nginx php-fpm && \
-RUN dnf install -y systemd openssh-server sudo && \
+RUN dnf install -y systemd systemd-libs initscripts openssh-server sudo && \
     dnf clean all
 
+RUN sed -i -e 's/\(UsePAM \)yes/\1 no/' /etc/ssh/sshd_config
+RUN ssh-keygen -A
+RUN mkdir /var/run/sshd
 # Enable the services
 #RUN systemctl enable mariadb.service && \
 #    systemctl enable php-fpm.service && \
@@ -43,5 +46,5 @@ RUN echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr
 #ADD https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub /home/vagrant/.ssh/authorized_keys
 RUN chmod 600 /home/$USER/.ssh/authorized_keys; \
     chown -R $USER:$USER /home/$USER/.ssh
-
+RUN sed -i -e 's/Defaults.*requiretty/#&/' /etc/sudoers
 

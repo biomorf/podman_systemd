@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
 ### https://blog.while-true-do.io/podman-systemd-in-containers/
+### OR:
+### https://joelkleier.com/posts/2022-07-05-podman-m1/
 
 # Build image (this can take a minute or two)
 #podman image build --rm -t localhost/fedora-web:latest .

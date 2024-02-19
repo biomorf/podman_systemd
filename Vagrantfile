@@ -36,7 +36,7 @@ Vagrant.configure(2) do |config|
       #docker.image = ""
       docker.build_dir = "."
       docker.dockerfile = "Containerfile"
-      docker.build_args = ["--build-arg", "DOCKER_GID=#{DOCKER_GID}"]
+      #docker.build_args = ["--build-arg", "DOCKER_GID=#{DOCKER_GID}"]
       docker.remains_running = true
       docker.has_ssh = true
 
@@ -49,6 +49,9 @@ Vagrant.configure(2) do |config|
       # Uncomment to force arm64 for testing images on Intel
       # docker.create_args = ["--platform=linux/arm64", "--cgroupns=host"]
     end
+
+    # need to tell podman to forward the ssh port
+    conf.vm.network "forwarded_port", guest: 22, host: 2222
 
     conf.vm.boot_timeout = 600
     conf.vm.synced_folder ".", "/vagrant_data"
